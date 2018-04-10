@@ -40,8 +40,7 @@ jobs:
     passed: [ deploy-staging-go ]
   - task: acceptance-staging-go
     file: jb-pipeline-example/ci/tasks/acceptance.yml
-    source:
-      params:
-        TARGET_URL: ((cf-staging-url-go))
+    params:
+      TARGET_URL: ((cf-staging-url-go))
        
     
