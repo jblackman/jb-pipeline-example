@@ -1,0 +1,15 @@
+---
+resources:
+- name: jb-pipeline-example
+  type: git
+  source:
+    uri: https://github.com/jblackman/jb-pipeline-example.git
+    branch: master
+
+jobs:
+- name: unit
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+  - task: unit
+    file: jb-pipeline-example/ci/tasks/test.yml

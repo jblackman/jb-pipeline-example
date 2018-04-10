@@ -1,0 +1,4 @@
+applications:
+- name: web-app
+  memory: 128M
+  host: staging-web-app-ak

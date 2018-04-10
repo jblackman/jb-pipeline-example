@@ -1,0 +1,14 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: golang
+    tag: '1.10'
+
+inputs:
+- name: jb-pipeline-example
+
+run:
+  path: jb-pipeline-example/ci/scripts/unit-go.sh
