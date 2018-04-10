@@ -1,0 +1,36 @@
+---
+resources:
+- name: jb-pipeline-example
+  type: git
+  source:
+    uri: https://github.com/jblackman/jb-pipeline-example.git
+    branch: master
+- name: cf-staging
+  type: cf
+  source:
+    api: ((cf-staging-api))
+    username: ((cf-staging-username))
+    password: ((cf-staging-password))
+    organization: ((cf-staging-organization))
+    space: ((cf-staging-space))
+
+jobs:
+- name: unit-go
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+  - task: unit-go
+    file: jb-pipeline-example/ci/tasks/unit-go.yml
+
+- name: deploy-staging
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ unit-go ]
+  - put: cf-staging
+    params:
+      manifest: jb-pipeline-example/go-api/manifest.yml
+      path: jb-pipeline-example/go-api
+
+       
+    
