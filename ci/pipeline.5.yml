@@ -61,7 +61,6 @@ jobs:
     params:
       manifest: jb-pipeline-example/go-api/manifest.prod.yml
       path: jb-pipeline-example/go-api
-      # current_app_name: 
 
 - name: acceptance-prod-go
   plan:
