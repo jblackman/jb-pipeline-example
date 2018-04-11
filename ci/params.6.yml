@@ -13,3 +13,5 @@ cf-prod-space: ons-demo
 cf-prod-url-go: https://prod-go-api-ak.cfapps.io/
 
 cf-staging-url-web: https://staging-web-app-ak.cfapps.io/
+
+cf-prod-url-web: https://prod-web-app-ak.cfapps.io/

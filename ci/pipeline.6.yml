@@ -100,3 +100,24 @@ jobs:
     file: jb-pipeline-example/ci/tasks/acceptance.yml
     params:
       TARGET_URL: ((cf-staging-url-web))
+
+- name: deploy-prod-web
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ acceptance-staging-web ]
+  - put: cf-prod
+    params:
+      manifest: jb-pipeline-example/web-app/manifest.prod.yml
+      path: jb-pipeline-example/web-app
+
+- name: acceptance-prod-web
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ deploy-prod-web ]
+  - task: acceptance-prod-web-task
+    file: jb-pipeline-example/ci/tasks/acceptance.yml
+    params:
+      TARGET_URL: ((cf-prod-url-web))
+

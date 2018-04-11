@@ -1,0 +1,4 @@
+applications:
+- name: web-app-prod
+  memory: 128M
+  host: prod-web-app-ak
