@@ -1,0 +1,6 @@
+applications:
+- name: go-api
+  host: staging-go-api-ak
+  memory: 30M
+  env:
+    GOPACKAGENAME: go-api

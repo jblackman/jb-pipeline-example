@@ -12,3 +12,4 @@ inputs:
 
 run:
   path: jb-pipeline-example/ci/scripts/unit-go.sh
+

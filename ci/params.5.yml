@@ -1,0 +1,14 @@
+cf-staging-api: https://api.run.pivotal.io
+cf-staging-username: joe.blackman+ons@armakuni.com
+cf-staging-password: KQGbNoLHLRJiFMT@gpu3gQuu
+cf-staging-organization: armakuni
+cf-staging-space: ons-demo
+cf-staging-url-go: https://staging-go-api-ak.cfapps.io/
+
+cf-prod-api: https://api.run.pivotal.io
+cf-prod-username: joe.blackman+ons@armakuni.com
+cf-prod-password: KQGbNoLHLRJiFMT@gpu3gQuu
+cf-prod-organization: armakuni
+cf-prod-space: ons-demo
+cf-prod-url-go: https://prod-go-api-ak.cfapps.io/
+
