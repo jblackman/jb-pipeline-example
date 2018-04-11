@@ -1,0 +1,118 @@
+---
+resources:
+- name: jb-pipeline-example
+  type: git
+  source:
+    uri: https://github.com/jblackman/jb-pipeline-example.git
+    branch: master
+
+- name: cf-staging
+  type: cf
+  source:
+    api: ((cf-staging-api))
+    username: ((cf-staging-username))
+    password: ((cf-staging-password))
+    organization: ((cf-staging-organization))
+    space: ((cf-staging-space))
+
+- name: cf-prod
+  type: cf
+  source:
+    api: ((cf-prod-api))
+    username: ((cf-prod-username))
+    password: ((cf-prod-password))
+    organization: ((cf-prod-organization))
+    space: ((cf-prod-space))
+
+jobs:
+- name: unit-go 
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+  - task: unit-go
+    file: jb-pipeline-example/ci/tasks/unit-go.yml
+
+- name: deploy-staging-go
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ unit-go ]
+  - put: cf-staging
+    params:
+      manifest: jb-pipeline-example/go-api/manifest.yml
+      path: jb-pipeline-example/go-api
+
+- name: acceptance-staging-go
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ deploy-staging-go ]
+  - task: acceptance-staging-go
+    file: jb-pipeline-example/ci/tasks/acceptance.yml
+    params:
+      TARGET_URL: ((cf-staging-url-go))
+
+- name: deploy-prod-go
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ acceptance-staging-go ]
+  - put: cf-prod
+    params:
+      manifest: jb-pipeline-example/go-api/manifest.prod.yml
+      path: jb-pipeline-example/go-api
+
+
+
+
+- name: unit-web 
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+  - task: unit-web
+    file: jb-pipeline-example/ci/tasks/unit-web.yml
+
+- name: deploy-staging-web
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ unit-web ]
+  - put: cf-staging
+    params:
+      manifest: jb-pipeline-example/web-app/manifest.yml
+      path: jb-pipeline-example/web-app
+
+- name: acceptance-staging-web
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ deploy-staging-web ]
+  - task: acceptance-staging-web
+    file: jb-pipeline-example/ci/tasks/acceptance.yml
+    params:
+      TARGET_URL: ((cf-staging-url-web))
+
+- name: deploy-prod-web
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ acceptance-staging-web ]
+  - put: cf-prod
+    params:
+      manifest: jb-pipeline-example/web-app/manifest.prod.yml
+      path: jb-pipeline-example/web-app
+
+- name: acceptance-prod
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ deploy-prod-web, deploy-prod-go ]
+  - aggregate:
+    - task: acceptance-prod-web-task
+      file: jb-pipeline-example/ci/tasks/acceptance.yml
+      params:
+        TARGET_URL: ((cf-prod-url-web))
+    - task: acceptance-prod-go
+      file: jb-pipeline-example/ci/tasks/acceptance.yml
+      params:
+        TARGET_URL: ((cf-prod-url-go))
