@@ -1,6 +1,6 @@
 package main
 
-// This is a simple API
+// This is a simple API mate
 
 import (
 	"encoding/json"
