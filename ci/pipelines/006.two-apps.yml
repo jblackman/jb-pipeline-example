@@ -72,8 +72,6 @@ jobs:
     params:
       TARGET_URL: ((cf-prod-url-go))
 
-
-
 - name: unit-web 
   plan:
   - get: jb-pipeline-example

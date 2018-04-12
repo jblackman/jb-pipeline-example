@@ -1,0 +1,25 @@
+---
+resources:
+- name: jb-pipeline-example
+  type: git
+  source:
+    uri: https://github.com/jblackman/jb-pipeline-example.git
+    branch: master
+
+jobs:
+- name: unit-go
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+  - task: unit-go
+    file: jb-pipeline-example/ci/tasks/unit-go.yml
+
+- name: acceptance-staging-go
+  plan:
+  - get: jb-pipeline-example
+    trigger: true
+    passed: [ unit-go ]
+  - task: acceptance-staging-go
+    file: jb-pipeline-example/ci/tasks/acceptance.yml
+    params:
+      TARGET_URL: ((cf-staging-url-go))
