@@ -1,5 +1,7 @@
 package main
 
+// This is a simple API
+
 import (
 	"encoding/json"
 	"fmt"
