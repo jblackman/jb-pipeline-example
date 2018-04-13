@@ -7,10 +7,10 @@ resources:
     branch: master
 
 jobs:
-- name: unit
+- name: unit-go
   plan:
   - get: jb-pipeline-example
     trigger: true
-  - task: unit
+  - task: unit-go
     file: jb-pipeline-example/ci/tasks/unit-go.yml
     
